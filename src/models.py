@@ -8,13 +8,24 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
+
+class User(Base):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    username = Column(String(250))
+    first_name = Column(String(250))
+    last_name =Column(String(250))
+    email = Column(String(250))
+    password = Column(String(50))
+
+
+class Character(Base):
+    __tablename__ = 'character'
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     birth_year = Column(String(250), nullable=False)
     eye_color = Column(String(250), nullable=True)
-    gender = Column(String(250), nullable=True)
+    genders = Column(String(250), nullable=True)
     hair_color = Column(String(250), nullable=True)
     height = Column(String(250), nullable=False)
     mass = Column(String(250), nullable=False)
@@ -55,16 +66,14 @@ class Starship(Base):
     consumables = Column(String(250))
 
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+class Favorite(Base):
+    __tablename__ = 'favorite'
+    id = Column (Integer, primary_key=True)
+    user_id = Column(ForeignKey('user.id'))
+    favorite_name = Column(String(250))
+    favorite_planet_id = Column(Integer, ForeignKey('planet.id'))
+    favorite_character_id = Column(Integer, ForeignKey('character.id'))
+    favorite_starship_id = Column(Integer, ForeignKey('starship.id'))
 
     def to_dict(self):
         return {}
